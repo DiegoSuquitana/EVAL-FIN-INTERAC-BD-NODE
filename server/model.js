@@ -11,6 +11,6 @@ let UserSchema = new Schema({
   psw: { type: String, required: true}
 })
 
-let UserModel = mongoose.model('Usuario', UserSchema)
+let UserModel = mongoose.model('Usuarios', UserSchema)
 
 module.exports = UserModel
