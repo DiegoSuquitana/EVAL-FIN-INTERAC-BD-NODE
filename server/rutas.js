@@ -1,6 +1,27 @@
 const Router = require('express').Router();
 const Users = require('./model.js')
 
+// Login
+Router.post('/login', function(req, res) {
+    let usuario = req.body.email,
+        psw = req.body.psw
+        console.log(usuario);
+    Users.findOne({email: usuario}).exec(function(err, docs)  {
+        if(docs != null){
+            if(psw.search(docs.psw)!= -1){
+                uid = docs.id;
+                res.end("Validado");
+            }else{
+                res.end("Contraseña no valida");
+            }
+        }else{
+            res.end("Usuario no valida: " + usuario);
+        }
+  })
+})
+  
+
+
 //Obtener todos los usuarios
 Router.get('/all', function(req, res) {
     Users.find({}).exec(function(err, docs) {
