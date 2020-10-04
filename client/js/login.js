@@ -5,7 +5,7 @@ $('.loginButton').on('click', function(event) {
         pass = $('#pass')
     
     if (nombreUsuario.val() != "" && pass.val() != "") {
-        $.post('users/login',{email: $('#user').val(), psw: $('#pass').val()}, function(response) {
+        $.post('users/login',{usuario: $('#user').val(), psw: $('#pass').val()}, function(response) {
             if (response == "Validado") {
                 window.location.href = "http://localhost:8082/main.html"
             }else{
