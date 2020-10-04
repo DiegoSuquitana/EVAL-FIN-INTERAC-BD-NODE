@@ -17,18 +17,18 @@ const SchemaE = mongoose.Schema
 
 let EventSchema = new SchemaE({
   eventId: { type: Number, required: true, unique: true},
-  titulo: { type: String, required: true },
-  fechaInicio: { type: Date, required: true},
-  horaInicio: { type: String, required: true},
-  fechaFinalizacion: { type: Date, required: true},
-  horaFinalizacion: { type: String, required: true},
+  title: { type: String, required: true },
+  start: { type: Date, required: true},
+  end: { type: Date, required: true},
   diaCompleto: { type: Boolean, required: true},
-  psw: { type: String, required: true},
-  fx_usuario: { type: Number, required: true, unique: true}
+  fx_usuario: { type: Number,
+ required: true}
 })
 
 let EventModel = mongoose.model('Eventos', EventSchema)
 
-module.exports = UserModel
-module.exports = EventModel
+//module.exports = EventModel
+module.exports = {   EventModel,  UserModel  }
+
+//module.exports = UserModel
 
