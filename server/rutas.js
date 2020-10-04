@@ -1,12 +1,15 @@
 const Router = require('express').Router();
-const Users = require('./model.js')
+//const Users = require('./model.js')
+//const { Event, Users }  = require("./model.js")
+const { EventModel, UserModel }  = require("./model.js")
 
 // Login
 Router.post('/login', function(req, res) {
-    let usuario = req.body.email,
+    let usuario = req.body.usuario,
         psw = req.body.psw
-        console.log(usuario);
-    Users.findOne({email: usuario}).exec(function(err, docs)  {
+        console.log("usuario: " + usuario);
+        console.log("password: " + psw);
+    UserModel.findOne({email: usuario}).exec(function(err, docs)  {
         if(docs != null){
             if(psw.search(docs.psw)!= -1){
                 uid = docs.id;
@@ -22,7 +25,7 @@ Router.post('/login', function(req, res) {
 
 //Obtener todos los usuarios
 Router.get('/all', function(req, res) {
-    Users.find({}).exec(function(err, docs) {
+    Event.find({}).exec(function(err, docs) {
         if (err) {
             res.status(500)
             res.json(err)
