@@ -15,12 +15,10 @@ Router.post('/login', function(req, res) {
                 res.end("Contraseña no valida");
             }
         }else{
-            res.end("Usuario no valida: " + usuario);
+            res.end("Usuario no valido");
         }
   })
 })
-  
-
 
 //Obtener todos los usuarios
 Router.get('/all', function(req, res) {
