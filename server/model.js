@@ -19,16 +19,12 @@ let EventSchema = new SchemaE({
   eventId: { type: Number, required: true, unique: true},
   title: { type: String, required: true },
   start: { type: Date, required: true},
-  end: { type: Date, required: true},
+  end: { type: Date},
   diaCompleto: { type: Boolean, required: true},
-  fx_usuario: { type: Number,
- required: true}
+  fx_usuario: { type: Number,required: true}
 })
 
 let EventModel = mongoose.model('Eventos', EventSchema)
 
-//module.exports = EventModel
 module.exports = {   EventModel,  UserModel  }
-
-//module.exports = UserModel
 
