@@ -1,5 +1,5 @@
 
-$('.loginButton').on('click', function(event) {
+$('#login').on('click', function(event) {
     
     var nombreUsuario = $('#user'),
         pass = $('#pass')
@@ -16,4 +16,5 @@ $('.loginButton').on('click', function(event) {
         alert("Complete todos los campos")
     }
 })
+
   
