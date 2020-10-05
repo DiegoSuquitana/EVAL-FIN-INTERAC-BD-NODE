@@ -1,7 +1,7 @@
 class EventManager {
     constructor() {
         
-        this.urlBase = "/events"
+        this.urlBase = "/users"
         this.obtenerDataInicial()
         this.inicializarFormulario()
         this.guardarEvento()
@@ -16,7 +16,7 @@ class EventManager {
 
     eliminarEvento(evento) {
         let eventId = evento.id
-        $.post('/events/delete/'+eventId, {id: eventId}, (response) => {
+        $.post('/users/delete/'+eventId, {id: eventId}, (response) => {
             alert(response)
         })
     }
@@ -29,7 +29,8 @@ class EventManager {
             title = $('#titulo').val(),
             end = '',
             start_hour = '',
-            end_hour = '';
+            end_hour = '',
+            diaCompleto = 1;
 
             if (!$('#allDay').is(':checked')) {
                 end = $('#end_date').val()
@@ -37,13 +38,16 @@ class EventManager {
                 end_hour = $('#end_hour').val()
                 start = start + 'T' + start_hour
                 end = end + 'T' + end_hour
+                diaCompleto = 0
             }
-            let url = this.urlBase + "/new"
+
+            let url = this.urlBase + "/newEvent"
             if (title != "" && start != "") {
                 let ev = {
                     title: title,
                     start: start,
-                    end: end
+                    end: end,
+                    diaCompleto: diaCompleto,
                 }
                 $.post(url, ev, (response) => {
                     alert(response)
