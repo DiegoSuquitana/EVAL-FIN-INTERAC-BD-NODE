@@ -1,7 +1,7 @@
 const Router = require('express').Router();
-//const Users = require('./model.js')
-//const { Event, Users }  = require("./model.js")
 const { EventModel, UserModel }  = require("./model.js")
+var uid
+var eid
 
 // Login
 Router.post('/login', function(req, res) {
@@ -12,7 +12,7 @@ Router.post('/login', function(req, res) {
     UserModel.findOne({email: usuario}).exec(function(err, docs)  {
         if(docs != null){
             if(psw.search(docs.psw)!= -1){
-                uid = docs.id;
+                uid = docs.userId;
                 res.end("Validado");
             }else{
                 res.end("Contraseña no valida");
@@ -23,9 +23,44 @@ Router.post('/login', function(req, res) {
   })
 })
 
+// Agregar un evento
+Router.post('/newEvent', function(req, res) {
+    let event = new EventModel({
+        eventId: Math.floor(Math.random() * 50),
+        title: req.body.title,
+        start: req.body.start,
+        end: req.body.end,
+        diaCompleto: req.body.diaCompleto,
+        fx_usuario: uid
+    })
+    console.log(event)
+    console.log("VALOR UID")
+    console.log(uid)
+    event.save(function(error) {
+        if (error) {
+            res.status(500)
+            return res.json(error);
+            //res.json(error)
+        }
+        res.send("Evento guardado")
+    })
+})
+
+// Eliminar un evento
+Router.get('/delete/:id', function(req, res) {
+    let uid = req.params.id
+    Users.remove({userId: uid}, function(error) {
+        if(error) {
+            res.status(500)
+            res.json(error)
+        }
+        res.send("Registro eliminado")
+    })
+})
+
 //Obtener todos los usuarios
 Router.get('/all', function(req, res) {
-    Event.find({}).exec(function(err, docs) {
+    EventModel.find({}).exec(function(err, docs) {
         if (err) {
             res.status(500)
             res.json(err)
