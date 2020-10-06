@@ -1,7 +1,7 @@
 const Router = require('express').Router();
 const { EventModel, UserModel }  = require("./model.js")
 var uid
-var eid
+
 
 // Login
 Router.post('/login', function(req, res) {
@@ -47,12 +47,13 @@ Router.post('/newEvent', function(req, res) {
 })
 
 // Eliminar un evento
-Router.get('/delete/:id', function(req, res) {
-    let uid = req.params.id
-    Users.remove({userId: uid}, function(error) {
+Router.post('/deletEvent/:id', function(req, res) {
+    let eid = req.body.id
+    console.log(eid)
+    EventModel.remove({eventId: eid}, function(error) {
         if(error) {
             res.status(500)
-            res.json(error)
+            return res.json(error);
         }
         res.send("Registro eliminado")
     })
@@ -82,6 +83,7 @@ Router.get('/', function(req, res) {
 })
 
 // Agregar a un usuario
+/*
 Router.post('/new', function(req, res) {
     let user = new Users({
         userId: Math.floor(Math.random() * 50),
@@ -99,8 +101,9 @@ Router.post('/new', function(req, res) {
         res.send("Registro guardado")
     })
 })
-
+*/
 // Eliminar un usuario por su id
+/*
 Router.get('/delete/:id', function(req, res) {
     let uid = req.params.id
     Users.remove({userId: uid}, function(error) {
@@ -111,7 +114,7 @@ Router.get('/delete/:id', function(req, res) {
         res.send("Registro eliminado")
     })
 })
-
+*/
 // Inactivar un usuario por su id
 Router.post('/inactive/:id', function(req, res) {
 
