@@ -15,8 +15,8 @@ class EventManager {
     }
 
     eliminarEvento(evento) {
-        let eventId = evento.id
-        $.post('/users/delete/'+eventId, {id: eventId}, (response) => {
+        let eventId = evento.eventId
+        $.post('/users/deletEvent/'+eventId, {id: eventId}, (response) => {
             alert(response)
         })
     }
