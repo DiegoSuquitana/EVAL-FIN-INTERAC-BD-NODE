@@ -30,7 +30,7 @@ Router.post('/newEvent', function(req, res) {
         title: req.body.title,
         start: req.body.start,
         end: req.body.end,
-        diaCompleto: req.body.diaCompleto,
+        diaCompleto: req.body.allDay,
         fx_usuario: uid
     })
     console.log(event)
@@ -59,6 +59,41 @@ Router.post('/deletEvent/:id', function(req, res) {
     })
 })
 
+// Actualizar un evento
+
+Router.post('/updatEvent/:id', function(req, res){
+    let eid = req.body.id,
+        startU = req.body.start,
+        endU = req.body.end,
+        titleU = req.body.title,
+        diaCompletoU = req.body.allDay,
+        fx_usuarioU = req.body.fx_usuario
+
+    console.log("eid")
+    console.log(eid)
+
+    let datos = {
+        start: startU,
+        title: titleU,
+        diaCompleto: diaCompletoU,
+        fx_usuario: fx_usuarioU
+    }
+    console.log(diaCompletoU);
+    if (diaCompletoU == false) {
+        datos["end"] = endU
+    }
+
+    EventModel.update({ eventId: eid }, datos, (error => {
+        if (error) {
+            res.status(500)
+            return res.json(error);
+        }
+        res.send("Registro actualizado")
+    }))
+
+})
+
+
 //Obtener todos los usuarios
 Router.get('/all', function(req, res) {
     EventModel.find({}).exec(function(err, docs) {
@@ -82,48 +117,7 @@ Router.get('/', function(req, res) {
     })
 })
 
-// Agregar a un usuario
-/*
-Router.post('/new', function(req, res) {
-    let user = new Users({
-        userId: Math.floor(Math.random() * 50),
-        nombres: req.body.nombres,
-        apellidos: req.body.apellidos,
-        email: req.body.email,
-        fechaNacimiento: req.body.fechaNacimiento,
-        psw: req.body.psw
-    })
-    user.save(function(error) {
-        if (error) {
-            res.status(500)
-            res.json(error)
-        }
-        res.send("Registro guardado")
-    })
-})
-*/
-// Eliminar un usuario por su id
-/*
-Router.get('/delete/:id', function(req, res) {
-    let uid = req.params.id
-    Users.remove({userId: uid}, function(error) {
-        if(error) {
-            res.status(500)
-            res.json(error)
-        }
-        res.send("Registro eliminado")
-    })
-})
-*/
-// Inactivar un usuario por su id
-Router.post('/inactive/:id', function(req, res) {
 
-})
-
-// Activar un usuario por su id
-Router.post('/active/:id', function(req, res) {
-
-})
 
 module.exports = Router
 
