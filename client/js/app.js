@@ -1,3 +1,5 @@
+//const { response } = require("express")
+
 class EventManager {
     constructor() {
         
@@ -21,6 +23,42 @@ class EventManager {
         })
     }
 
+    actualizarEvento(evento){
+        let eventId = evento.eventId,
+            start = moment(evento.start).format('YYYY-MM-DD HH:mm:ss'),
+            end = moment(evento.end).format('YYYY-MM-DD HH:mm:ss'),
+            start_date,
+            end_date,
+            start_hour,
+            end_hour,
+            endI,
+            startI
+
+            start_date = start.substr(0,10)
+            start_hour = start.substr(11,19)
+            
+            if (end == "Invalid date"){
+                end_date = "null"
+                end_hour = "null"
+                end = "null"
+                endI = "null"
+                
+            }
+            else{
+                end_date = end.substr(0,10)
+                end_hour = end.substr(11,19)
+                endI = end_date + 'T' + end_hour
+
+            }
+
+            startI = start_date + 'T' + start_hour
+                
+        $.post('/users/updatEvent/'+eventId, {id: evento.eventId, start: startI, title: evento.title, end: endI, allDay: evento.diaCompleto, fx_usuario: evento.fx_usuario}, (response) => {
+            alert(response)  
+        })
+
+    }
+
     guardarEvento() {
         $('.addButton').on('click', (ev) => {
             ev.preventDefault()
@@ -30,7 +68,7 @@ class EventManager {
             end = '',
             start_hour = '',
             end_hour = '',
-            diaCompleto = 1;
+            allDay = true;
 
             if (!$('#allDay').is(':checked')) {
                 end = $('#end_date').val()
@@ -38,7 +76,7 @@ class EventManager {
                 end_hour = $('#end_hour').val()
                 start = start + 'T' + start_hour
                 end = end + 'T' + end_hour
-                diaCompleto = 0
+                allDay = false
             }
 
             let url = this.urlBase + "/newEvent"
@@ -47,7 +85,7 @@ class EventManager {
                     title: title,
                     start: start,
                     end: end,
-                    diaCompleto: diaCompleto,
+                    diaCompleto: allDay,
                 }
                 $.post(url, ev, (response) => {
                     alert(response)
