@@ -20,7 +20,7 @@ let EventSchema = new SchemaE({
   title: { type: String, required: true },
   start: { type: Date, required: true},
   end: { type: Date},
-  diaCompleto: { type: Boolean, required: true},
+  allDay: { type: Boolean, required: true},
   fx_usuario: { type: Number,required: true}
 })
 
