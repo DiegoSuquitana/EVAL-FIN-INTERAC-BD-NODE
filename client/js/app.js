@@ -1,20 +1,31 @@
-//const { response } = require("express")
-
-class EventManager {
+class EventManager {  
     constructor() {
         
-        this.urlBase = "/users"
-        this.obtenerDataInicial()
-        this.inicializarFormulario()
-        this.guardarEvento()
+        if (localStorage.getItem("sesion") !== "undefined") {
+            this.urlBase = "/users"
+            this.obtenerDataInicial()
+            this.inicializarFormulario()
+            this.guardarEvento()
+        }
+        else{
+            alert("Debe iniciar sesion")
+            this.cerrarSesion()
+        }
+
     }
 
-    obtenerDataInicial() {
+    cerrarSesion(){
+        localStorage.setItem("sesion", "undefined");
+        window.location.href = "http://localhost:8082"
+    }
+
+    obtenerDataInicial(){
         let url = this.urlBase + "/all"
         $.get(url, (response) => {
             this.inicializarCalendario(response)
         })
     }
+    
 
     eliminarEvento(evento) {
         let eventId = evento.eventId
@@ -52,8 +63,8 @@ class EventManager {
             }
 
             startI = start_date + 'T' + start_hour
-                
-        $.post('/users/updatEvent/'+eventId, {id: evento.eventId, start: startI, title: evento.title, end: endI, allDay: evento.diaCompleto, fx_usuario: evento.fx_usuario}, (response) => {
+    
+        $.post('/users/updatEvent/'+eventId, {id: evento.eventId, start: startI, title: evento.title, end: endI, allDay: evento.allDay, fx_usuario: evento.fx_usuario}, (response) => {
             alert(response)  
         })
 
@@ -85,7 +96,7 @@ class EventManager {
                     title: title,
                     start: start,
                     end: end,
-                    diaCompleto: allDay,
+                    allDay: allDay,
                 }
                 $.post(url, ev, (response) => {
                     alert(response)
