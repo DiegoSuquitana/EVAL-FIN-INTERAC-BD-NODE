@@ -1,4 +1,5 @@
 const Router = require('express').Router();
+const e = require('express');
 const { EventModel, UserModel }  = require("./model.js")
 var uid
 
@@ -24,13 +25,25 @@ Router.post('/login', function(req, res) {
 })
 
 // Agregar un evento
+
 Router.post('/newEvent', function(req, res) {
+
+    console.log("req.body")
+    console.log(req.body)
+    
+    console.log("req.body.start")
+    s = req.body.start
+    console.log(s)
+    console.log("req.body.end")
+    eN = req.body.end
+    console.log(eN)
+    
     let event = new EventModel({
         eventId: Math.floor(Math.random() * 50),
         title: req.body.title,
-        start: req.body.start,
-        end: req.body.end,
-        diaCompleto: req.body.allDay,
+        start: s,
+        end: eN,
+        allDay: req.body.allDay,
         fx_usuario: uid
     })
     console.log(event)
@@ -62,11 +75,14 @@ Router.post('/deletEvent/:id', function(req, res) {
 // Actualizar un evento
 
 Router.post('/updatEvent/:id', function(req, res){
+    console.log ("actualiza res.body")
+    console.log (req.body)
     let eid = req.body.id,
         startU = req.body.start,
         endU = req.body.end,
         titleU = req.body.title,
-        diaCompletoU = req.body.allDay,
+        //diaCompletoU = req.body.allDay,
+        diaCompletoU = req.body.allDay == 'true',
         fx_usuarioU = req.body.fx_usuario
 
     console.log("eid")
@@ -74,15 +90,23 @@ Router.post('/updatEvent/:id', function(req, res){
 
     let datos = {
         start: startU,
+        //end: diaCompletoU,
         title: titleU,
-        diaCompleto: diaCompletoU,
+        allDay: diaCompletoU,
         fx_usuario: fx_usuarioU
     }
+
     console.log(diaCompletoU);
+    
     if (diaCompletoU == false) {
         datos["end"] = endU
     }
 
+    console.log("datos")
+    console.log(datos)
+    console.log("END")
+    console.log(endU)
+    
     EventModel.update({ eventId: eid }, datos, (error => {
         if (error) {
             res.status(500)
@@ -96,7 +120,9 @@ Router.post('/updatEvent/:id', function(req, res){
 
 //Obtener todos los usuarios
 Router.get('/all', function(req, res) {
-    EventModel.find({}).exec(function(err, docs) {
+    console.log("usuario")
+    console.log(uid)
+    EventModel.find({fx_usuario: uid}).exec(function(err, docs) {
         if (err) {
             res.status(500)
             res.json(err)
